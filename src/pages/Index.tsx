@@ -15,7 +15,10 @@ import MACDChart from '@/components/trading/MACDChart';
 import AIChatPanel from '@/components/trading/AIChatPanel';
 import AISignalPanel from '@/components/trading/AISignalPanel';
 import NewsPanel from '@/components/trading/NewsPanel';
-import { Activity, Wifi, WifiOff, Loader2, TrendingUp, Target, BarChart3, Bot, Brain, Newspaper } from 'lucide-react';
+import MultiTimeframePanel from '@/components/trading/MultiTimeframePanel';
+import TradeJournal from '@/components/trading/TradeJournal';
+import PriceAlertManager from '@/components/trading/PriceAlertManager';
+import { Activity, Wifi, WifiOff, Loader2, TrendingUp, Target, BarChart3, Bot, Brain, Newspaper, Layers, BookOpen, Bell } from 'lucide-react';
 
 const SYMBOLS = [
   { value: 'BTCUSDT', label: 'BTC' },
@@ -27,7 +30,7 @@ const SYMBOLS = [
   { value: 'DOGEUSDT', label: 'DOGE' },
 ];
 
-type TabKey = 'signals' | 'analysis' | 'trends' | 'indicators' | 'news' | 'ai';
+type TabKey = 'signals' | 'analysis' | 'mtf' | 'trends' | 'indicators' | 'journal' | 'alerts' | 'news' | 'ai';
 
 const Index = () => {
   const [symbol, setSymbol] = useState('BTCUSDT');
@@ -58,9 +61,12 @@ const Index = () => {
 
   const tabs: { key: TabKey; label: string; icon: React.ReactNode; count?: number }[] = [
     { key: 'signals', label: 'AI Signals', icon: <Brain className="w-3.5 h-3.5" /> },
+    { key: 'mtf', label: 'MTF', icon: <Layers className="w-3.5 h-3.5" /> },
     { key: 'analysis', label: 'Phân tích', icon: <TrendingUp className="w-3.5 h-3.5" /> },
-    { key: 'trends', label: `Xu hướng`, icon: <Target className="w-3.5 h-3.5" />, count: aiAnalysis?.aiTrendLines?.length || trendLines.length },
+    { key: 'trends', label: 'Xu hướng', icon: <Target className="w-3.5 h-3.5" />, count: aiAnalysis?.aiTrendLines?.length || trendLines.length },
     { key: 'indicators', label: 'Chỉ báo', icon: <BarChart3 className="w-3.5 h-3.5" /> },
+    { key: 'journal', label: 'Nhật ký', icon: <BookOpen className="w-3.5 h-3.5" /> },
+    { key: 'alerts', label: 'Cảnh báo', icon: <Bell className="w-3.5 h-3.5" /> },
     { key: 'news', label: 'Tin tức', icon: <Newspaper className="w-3.5 h-3.5" /> },
     { key: 'ai', label: 'Chat AI', icon: <Bot className="w-3.5 h-3.5" /> },
   ];
@@ -238,6 +244,10 @@ const Index = () => {
                 />
               )}
 
+              {activeTab === 'mtf' && (
+                <MultiTimeframePanel symbol={symbol} />
+              )}
+
               {activeTab === 'analysis' && (
                 <div className="space-y-3">
                   <PriceTicker candles={candles} symbol={symbol} />
@@ -300,6 +310,22 @@ const Index = () => {
                   <MACDChart macd={macdData.macd} signal={macdData.signal} histogram={macdData.histogram} candles={candles} />
                   <VolumeChart candles={candles} />
                 </div>
+              )}
+
+              {activeTab === 'journal' && (
+                <TradeJournal
+                  symbol={symbol}
+                  timeframe={timeframe}
+                  currentPrice={candles[candles.length - 1]?.close ?? 0}
+                  aiAnalysis={aiAnalysis}
+                />
+              )}
+
+              {activeTab === 'alerts' && (
+                <PriceAlertManager
+                  symbol={symbol}
+                  currentPrice={candles[candles.length - 1]?.close ?? 0}
+                />
               )}
 
               {activeTab === 'news' && (

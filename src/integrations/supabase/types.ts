@@ -14,7 +14,108 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      price_alerts: {
+        Row: {
+          alert_type: string
+          condition: string
+          created_at: string
+          id: string
+          is_active: boolean
+          message: string | null
+          symbol: string
+          target_price: number
+          triggered_at: string | null
+        }
+        Insert: {
+          alert_type?: string
+          condition: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          message?: string | null
+          symbol: string
+          target_price: number
+          triggered_at?: string | null
+        }
+        Update: {
+          alert_type?: string
+          condition?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          message?: string | null
+          symbol?: string
+          target_price?: number
+          triggered_at?: string | null
+        }
+        Relationships: []
+      }
+      trade_journal: {
+        Row: {
+          ai_analysis: Json | null
+          closed_at: string | null
+          confluences: string[] | null
+          created_at: string
+          entry_price: number
+          exit_price: number | null
+          id: string
+          notes: string | null
+          pnl: number | null
+          pnl_pct: number | null
+          sl: number
+          status: string
+          strategy: string | null
+          symbol: string
+          timeframe: string
+          tp1: number | null
+          tp2: number | null
+          tp3: number | null
+          trade_type: string
+        }
+        Insert: {
+          ai_analysis?: Json | null
+          closed_at?: string | null
+          confluences?: string[] | null
+          created_at?: string
+          entry_price: number
+          exit_price?: number | null
+          id?: string
+          notes?: string | null
+          pnl?: number | null
+          pnl_pct?: number | null
+          sl: number
+          status?: string
+          strategy?: string | null
+          symbol: string
+          timeframe: string
+          tp1?: number | null
+          tp2?: number | null
+          tp3?: number | null
+          trade_type: string
+        }
+        Update: {
+          ai_analysis?: Json | null
+          closed_at?: string | null
+          confluences?: string[] | null
+          created_at?: string
+          entry_price?: number
+          exit_price?: number | null
+          id?: string
+          notes?: string | null
+          pnl?: number | null
+          pnl_pct?: number | null
+          sl?: number
+          status?: string
+          strategy?: string | null
+          symbol?: string
+          timeframe?: string
+          tp1?: number | null
+          tp2?: number | null
+          tp3?: number | null
+          trade_type?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
